@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday 🎉 Bismillah Baji</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+.video-controls {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+    .container,
+    #page2,
+    #page3,
+    #page4,
+    #page5 {
+      text-align: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #page2 {
+      display: none;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    }
+
+    #page3 {
+      display: none;
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    }
+    
+    #page4 {
+      display: none;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    #page5 {
+      display: none;
+      background: linear-gradient(-45deg, #ff4ecd, #00f0ff, #ffff00, #ff9900, #00ff6a);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      overflow: hidden;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .wish-text,
+    .name-text {
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity 1s ease, transform 1s ease;
+      z-index: 2;
+      margin: 0.5rem 0;
+      text-shadow: 0 0 10px #fff;
+    }
+
+    .show {
+      opacity: 1 !important;
+      transform: scale(1) !important;
+    }
+
+    .wish-text {
+      font-size: 3rem;
+      color: #ff4ecd;
+    }
+
+    .name-text {
+      font-size: 2.5rem;
+      color: #00f0ff;
+    }
+
+    .cake-img {
+      width: 200px;
+      height: auto;
+      margin-top: 20px;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity 1s ease, transform 1s ease;
+      z-index: 2;
+    }
+
+    .start-btn,
+    .celebrate-btn,
+    .btn,
+    #wishesBtn,
+    .poetry-btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s ease;
+    }
+
+    .start-btn {
+      background: #ff4ecd;
+      color: white;
+    }
+
+    .start-btn:hover {
+      background: #e644b3;
+    }
+
+    .celebrate-btn {
+      background: #00f0ff;
+      color: black;
+      display: none;
+    }
+
+    .celebrate-btn:hover {
+      background: #00c2cc;
+    }
+
+    .btn {
+      background: #ff4ecd;
+      color: white;
+    }
+
+    .btn:hover {
+      background: #e644b3;
+    }
+
+    video {
+      width: 60%;
+      max-height: 60vh;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .gift-box-img {
+      max-width: 300px;
+      max-height: 300px;
+      cursor: pointer;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .gift-open-img {
+      max-width: 300px;
+      max-height: 300px;
+      animation: pop 1s ease forwards;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    #birthdayMessage {
+      font-size: 2.5rem;
+      color: #ff4ecd;
+      margin-top: 20px;
+      display: none;
+      text-shadow: 0 0 10px white;
+    }
+    
+    /* Page 4 styles - Responsive Wishes Page */
+    .bubbles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .bubbles span {
+      position: absolute;
+      display: block;
+      border-radius: 50%;
+      bottom: -150px;
+      animation: rise 12s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        opacity: 0.4;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.3);
+        opacity: 0;
+      }
+    }
+
+    .wish-box {
+      max-width: 90%;
+      width: 700px;
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      margin: 0 20px;
+      z-index: 1;
+    }
+
+    .wish-title {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: #ffeb3b;
+      text-shadow: 0 0 10px #ffeb3b;
+    }
+
+    .wish-content {
+      font-size: 1rem;
+      line-height: 1.6;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+      .wish-box {
+        padding: 15px;
+        max-width: 95%;
+      }
+      .wish-title {
+        font-size: 1.5rem;
+      }
+      .wish-content {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .wish-title {
+        font-size: 1.3rem;
+      }
+      .wish-content {
+        font-size: 0.85rem;
+        min-height: 120px;
+      }
+    }
+
+    .poetry-btn {
+      background: #00f0ff;
+      color: black;
+      margin-top: 20px;
+    }
+
+    .poetry-btn:hover {
+      background: #00c2cc;
+    }
+
+    /* Page 5 Poetry Styles - Responsive */
+/* Page 5 Layout */
+/* Page 5 Styles */
+/* Page 5 Styles */
+#page5 {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Videos Section */
+.videos-section {
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.video-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.video-item video {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 10px;
+  aspect-ratio: 16/9;
+  background: #000;
+}
+
+.video-controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+/* Add this new class for the gap */
+.video-poetry-gap {
+  height: 40px; /* Adjust this value to increase/decrease the gap */
+}
+
+/* Poetry Section */
+.poetry-section {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.word {
+  display: inline-block;
+  margin: 8px;
+  font-size: 1.8rem;
+  color: white;
+  font-weight: bold;
+  text-shadow: 2px 2px 8px #000;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: popUp 0.5s forwards;
+}
+
+@keyframes popUp {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .video-item:nth-child(n+3) {
+    margin-top: 20px;
+  }
+  
+  .word {
+    font-size: 1.6rem;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .video-item {
+    width: 240px;
+  }
+  
+  .word {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #page5 {
+    padding: 15px;
+  }
+  
+  .video-item {
+    width: 220px;
+  }
+  
+  .word {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-item {
+    width: 200px;
+  }
+  
+  .word {
+    font-size: 1.2rem;
+  }
+  
+  .play-btn, .stop-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+
+    /* Animated Heart Background */
+    .heart {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color:red;
+      transform: rotate(45deg);
+      animation: float 10s infinite linear;
+      z-index: 0;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color:red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -7.5px;
+      left: 0;
+    }
+
+    .heart::after {
+      top: 0;
+      left: -7.5px;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container" id="page1">
+    <canvas id="fireworks"></canvas>
+    <h1 class="wish-text">🎉 Happy Birthday 🎉</h1>
+    <h2 class="name-text">Dear <span id="name">Bismillah Baji</span></h2>
+    <img id="cakeImage" class="cake-img" src="./images/cake.png" alt="Birthday Cake" />
+
+    <audio id="bg-music" src="./happy-birthday-254480.mp3" loop></audio>
+    <audio id="pop-sound" src="pop.mp3"></audio>
+
+    <button class="start-btn">START</button>
+    <button class="celebrate-btn" id="celebrateBtn">Let's Celebrate Birthday</button>
+  </div>
+
+ <div id="page2">
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="video-controls">
+    <button class="btn" id="playBtn">▶️ Play</button>
+    <button class="btn stop-btn" id="stopBtn">⏹️ Stop</button>
+  </div>
+
+  <video id="birthdayVideo">
+    <source src="./🎉 Wishing You the Happiest and Most Wonderful Birthday Ever! 🎉 Best Happy Birthday Song!.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <audio id="page2Music" src="./happy-happy-birthday.mp3" loop></audio>
+
+  <button class="btn" id="giftBtn">🎁 Open Your Gift</button>
+</div>
+
+  <div id="page3" class="section">
+    <canvas id="sprinkleCanvas"></canvas>
+    <audio id="page3Music" src="./background-music.mp3" loop></audio>
+
+    <img src="./images/3.png" alt="Gift Box" id="giftBox" class="gift-box-img" title="Click to Open">
+    <img src="./images/gift.png" alt="Opened Gift" id="giftOpen" class="gift-open-img" style="display: none;">
+
+    <h2 id="birthdayMessage">🎉 Happy Birthday 🎉</h2>
+    <button id="wishesBtn" class="btn" style="display: none;">🎂 See Birthday Wishes</button>
+  </div>
+  
+  <!-- Page 4 - Wishes Page -->
+  <div id="page4">
+    <!-- Multi-Color Bubble Background -->
+    <div class="bubbles" id="bubblesContainer"></div>
+
+    <div class="wish-box" id="wishBox">
+      <div class="wish-title" id="wishTitle">Happy Birthday 🎉</div>
+      <div class="wish-content" id="wishContent">Loading wishes...</div>
+    </div>
+
+    <button class="poetry-btn" id="poetryBtn">📜 Poetry</button>
+  </div>
+
+<!-- Page 5 - Poetry Page -->
+<!-- Page 5 - Poetry Page -->
+<div id="page5">
+  <!-- Floating Hearts -->
+  <div id="hearts"></div>
+
+  <!-- Video Grid -->
+  <div class="video-grid">
+    <!-- Top Left Video -->
+    <div class="video-container top-left">
+      <video id="video1" src="./images/1.mp4"></video>
+      <div class="btn-group">
+        <button class="play-btn" onclick="playVideo('video1')">▶️ Play</button>
+        <button class="stop-btn" onclick="stopVideo('video1')">⏹️ Stop</button>
+      </div>
+    </div>
+
+    <!-- Top Right Video -->
+    <div class="video-container top-right">
+      <video id="video2" src="./images/2.mp4"></video>
+      <div class="btn-group">
+        <button class="play-btn" onclick="playVideo('video2')">▶️ Play</button>
+        <button class="stop-btn" onclick="stopVideo('video2')">⏹️ Stop</button>
+      </div>
+    </div>
+
+    <!-- Bottom Left Video -->
+    <div class="video-container bottom-left">
+      <video id="video3" src="./images/3.mp4"></video>
+      <div class="btn-group">
+        <button class="play-btn" onclick="playVideo('video3')">▶️ Play</button>
+        <button class="stop-btn" onclick="stopVideo('video3')">⏹️ Stop</button>
+      </div>
+    </div>
+
+    <!-- Bottom Right Video -->
+    <div class="video-container bottom-right">
+      <video id="codeVideo" src="./images/1 (2).mp4"></video>
+      <div class="btn-group">
+        <button class="play-btn" onclick="playVideo('codeVideo')">▶️ Play</button>
+        <button class="stop-btn" onclick="stopVideo('codeVideo')">⏹️ Stop</button>
+      </div>
+    </div>
+  </div>
+
+   <!-- Add this gap element -->
+  <div class="video-poetry-gap"></div>
+
+  <!-- Poetry Container -->
+  <div class="poetry-container">
+    <div id="poetry"></div>
+  </div>
+  <script>
+    // Page 1 Elements and Functions
+    const startBtn = document.querySelector(".start-btn");
+    const celebrateBtn = document.getElementById("celebrateBtn");
+    const fireworksCanvas = document.getElementById("fireworks");
+    const ctx = fireworksCanvas.getContext("2d");
+    const cakeImage = document.getElementById("cakeImage");
+
+    fireworksCanvas.width = window.innerWidth;
+    fireworksCanvas.height = window.innerHeight;
+
+    let particles = [];
+    let animationStarted = false;
+
+    function createParticle(x, y) {
+      const colors = ["#ff4ecd", "#00f0ff", "#ffff00", "#ff9900", "#00ff6a"];
+      for (let i = 0; i < 100; i++) {
+        particles.push({
+          x: x,
+          y: y,
+          radius: Math.random() * 2 + 1,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speedX: (Math.random() - 0.5) * 8,
+          speedY: (Math.random() - 0.5) * 8,
+          life: 100
+        });
+      }
+    }
+
+    function animateParticles() {
+      ctx.fillStyle = "rgba(0,0,0,0.1)";
+      ctx.fillRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+      particles.forEach((p, index) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.life--;
+        if (p.life <= 0) particles.splice(index, 1);
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    startBtn.addEventListener("click", () => {
+      if (animationStarted) return;
+      animationStarted = true;
+
+      startBtn.style.display = "none";
+
+      document.getElementById("bg-music").play();
+      document.getElementById("pop-sound").play();
+
+      document.querySelector(".wish-text").classList.add("show");
+
+      setTimeout(() => {
+        document.querySelector(".name-text").classList.add("show");
+      }, 2000);
+
+      setTimeout(() => {
+        cakeImage.classList.add("show");
+      }, 4000);
+
+      setTimeout(() => {
+        celebrateBtn.style.display = "inline-block";
+      }, 6000);
+
+      setInterval(() => {
+        const x = Math.random() * fireworksCanvas.width;
+        const y = Math.random() * fireworksCanvas.height / 2;
+        createParticle(x, y);
+      }, 1000);
+
+      animateParticles();
+    });
+
+    window.addEventListener('resize', () => {
+      fireworksCanvas.width = window.innerWidth;
+      fireworksCanvas.height = window.innerHeight;
+    });
+
+    celebrateBtn.addEventListener('click', () => {
+      document.getElementById('page1').style.display = 'none';
+      document.getElementById('page2').style.display = 'flex';
+
+      document.getElementById('bg-music').pause();
+      startConfetti();
+    });
+
+    // Page 2 Elements and Functions
+const playBtn = document.getElementById('playBtn');
+const stopBtn = document.getElementById('stopBtn');
+const video = document.getElementById('birthdayVideo');
+const music = document.getElementById('page2Music');
+
+playBtn.addEventListener('click', () => {
+  video.play();
+  music.play();
+  playBtn.disabled = true;
+  stopBtn.disabled = false;
+});
+
+stopBtn.addEventListener('click', () => {
+  video.pause();
+  video.currentTime = 0;
+  music.pause();
+  music.currentTime = 0;
+  playBtn.disabled = false;
+  stopBtn.disabled = true;
+});
+
+// Initialize button states
+stopBtn.disabled = true;
+
+
+    document.getElementById('giftBtn').addEventListener('click', () => {
+      document.getElementById('page2').style.display = 'none';
+      document.getElementById('page3').style.display = 'flex';
+    });
+
+    // Page 3 Elements and Functions
+    const giftBox = document.getElementById('giftBox');
+    const giftOpen = document.getElementById('giftOpen');
+    const sprinkleCanvas = document.getElementById('sprinkleCanvas');
+    const sprinkleCtx = sprinkleCanvas.getContext('2d');
+    const wishesBtn = document.getElementById('wishesBtn');
+    const birthdayMessage = document.getElementById('birthdayMessage');
+
+    sprinkleCanvas.width = window.innerWidth;
+    sprinkleCanvas.height = window.innerHeight;
+
+    let sprinkles = [];
+
+    giftBox.addEventListener('click', () => {
+      giftBox.style.display = 'none';
+      giftOpen.style.display = 'block';
+
+      document.getElementById('pop-sound').play();
+      document.getElementById('page3Music').play();
+
+      birthdayMessage.style.display = 'block';
+      wishesBtn.style.display = 'inline-block';
+
+      for (let i = 0; i < 100; i++) {
+        sprinkles.push({
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          radius: Math.random() * 6 + 4,
+          color: ['#ff4ecd', '#00f0ff', '#ffff00', '#ff9900', '#00ff6a'][Math.floor(Math.random() * 5)],
+          speedY: (Math.random() - 0.5) * 8,
+          speedX: (Math.random() - 0.5) * 8
+        });
+      }
+    });
+
+    function animateSprinkles() {
+      sprinkleCtx.clearRect(0, 0, sprinkleCanvas.width, sprinkleCanvas.height);
+      sprinkles.forEach((c, index) => {
+        sprinkleCtx.beginPath();
+        sprinkleCtx.arc(c.x, c.y, c.radius, 0, Math.PI * 2);
+        sprinkleCtx.fillStyle = c.color;
+        sprinkleCtx.fill();
+        c.y += c.speedY;
+        c.x += c.speedX;
+        if (c.y > sprinkleCanvas.height) sprinkles.splice(index, 1);
+      });
+      requestAnimationFrame(animateSprinkles);
+    }
+
+    animateSprinkles();
+
+    wishesBtn.addEventListener('click', () => {
+      document.getElementById('page3').style.display = 'none';
+      document.getElementById('page4').style.display = 'flex';
+      initializePage4();
+    });
+
+    window.addEventListener('resize', () => {
+      sprinkleCanvas.width = window.innerWidth;
+      sprinkleCanvas.height = window.innerHeight;
+    });
+
+    // Confetti Functions
+    let confettiCanvas = document.getElementById('confettiCanvas');
+    let confettiCtx = confettiCanvas.getContext('2d');
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+
+    let confettiParticles = [];
+
+    function createConfetti() {
+      const colors = ['#ff4ecd', '#00f0ff', '#ffff00', '#ff9900', '#00ff6a'];
+      for (let i = 0; i < 5; i++) {
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: -10,
+          radius: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speedY: Math.random() * 5 + 2,
+          speedX: (Math.random() - 0.5) * 2
+        });
+      }
+    }
+
+    function animateConfetti() {
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confettiParticles.forEach((p, index) => {
+        confettiCtx.beginPath();
+        confettiCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.fill();
+        p.y += p.speedY;
+        p.x += p.speedX;
+        if (p.y > confettiCanvas.height) confettiParticles.splice(index, 1);
+      });
+      requestAnimationFrame(animateConfetti);
+    }
+
+    function startConfetti() {
+      setInterval(createConfetti, 300);
+      animateConfetti();
+    }
+    
+    // Page 4 Functions
+    function initializePage4() {
+      // Create bubbles background
+      const bubblesContainer = document.getElementById('bubblesContainer');
+      const colors = ["#ff4ecd", "#4ecaff", "#ffec4e", "#7eff4e", "#ff7e4e", "#ff4e9b"];
+
+      bubblesContainer.innerHTML = '';
+      
+      for (let i = 0; i < 30; i++) {
+        const bubble = document.createElement('span');
+        const size = Math.random() * 40 + 20 + 'px';
+        const position = Math.random() * 100 + '%';
+        const delay = Math.random() * 5 + 's';
+        const duration = Math.random() * 10 + 8 + 's';
+        const bg = colors[Math.floor(Math.random() * colors.length)];
+
+        bubble.style.width = size;
+        bubble.style.height = size;
+        bubble.style.left = position;
+        bubble.style.backgroundColor = bg;
+        bubble.style.animationDelay = delay;
+        bubble.style.animationDuration = duration;
+
+        bubblesContainer.appendChild(bubble);
+      }
+
+      // Wishes data
+      const wishes = [
+        {
+          title: "💖 Sweet & Loving",
+          text: "To my dearest baji, Your smile has been my sunshine on cloudy days, your laugh my favorite melody. You've turned ordinary moments into beautiful memories just by being you. On your special day, I wish you endless happiness, love that overflows, and dreams that take flight. May your birthday be as radiant, warm, and beautiful as your soul! 🌸💕 Happy Birthday, my forever cheerleader!"
+        },
+        {
+          title: "✨ Blessing & Prayer",
+          text: "My precious baji, As you celebrate another year of life, I pray God showers you with blessings that outnumber the stars. May He grant you joy that never fades, success that knows no limits, and love that grows deeper with time. May your path always be lit with hope, your heart with peace, and your days with laughter. 🤍🙏 Wishing you a birthday as wonderful as the love you've given me!"
+        },
+        {
+          title: "😎 Cool & Stylish",
+          text: "Hey Queen, You're not just my baji—you're a whole vibe! The way you own your life with confidence and grace inspires me every day. Keep turning heads, breaking norms, and slaying those goals like the superstar you are. The world isn't ready for your next-level magic! 🔥👑 Happy Birthday baji"
+        },
+        {
+          title: "🎂 Simple & Heartfelt",
+          text: "Dear baji, You've seen me at my worst and still call me your favorite. You've kept my secrets, wiped my tears, and celebrated my wins like your own. Today, I celebrate YOU—the irreplaceable, the loyal.May your year ahead be as incredible as the love you've shown me. 🥳💖 Happy Birthday to my heart's keeper!"
+        },
+        {
+          title: "🌟 Royal & Special",
+          text: "To Her Majesty, My baji, A throne would be too small for the way you rule hearts with kindness, strength, and elegance. Today, the universe bows to you! May your birthday sparkle with luxury, adventure, and all the love you deserve.👑✨ Long live the birthday royalty!"
+        }
+      ];
+
+      const wishTitle = document.getElementById('wishTitle');
+      const wishContent = document.getElementById('wishContent');
+      let currentIndex = 0;
+
+      function showWish() {
+        wishTitle.textContent = wishes[currentIndex].title;
+        wishContent.textContent = wishes[currentIndex].text;
+        currentIndex = (currentIndex + 1) % wishes.length;
+      }
+
+      // Show first wish immediately
+      showWish();
+      
+      // Set interval for rotating wishes
+      setInterval(showWish, 7000);
+      
+      // Poetry button functionality
+      document.getElementById('poetryBtn').addEventListener('click', () => {
+        document.getElementById('page4').style.display = 'none';
+        document.getElementById('page5').style.display = 'flex';
+        showPoetry();
+        createHearts();
+      });
+    }
+
+    // Page 5 Functions
+    function playVideo(videoId) {
+      const video = document.getElementById(videoId);
+      video.play();
+    }
+
+    function stopVideo(videoId) {
+      const video = document.getElementById(videoId);
+      video.pause();
+      video.currentTime = 0;
+    }
+
+    function showPoetry() {
+      const poetry = [
+        "You", "are", "a", "light,", "a", "guide,", "a", "star,", "so", "bright.",
+        "With", "every", "lesson,", "you", "make", "our", "futures", "shine", "so", "right.",
+        "Thank", "you", "for", "being", "the", "best", "teacher", "in", "sight!",
+        "Your", "love", "is", "our", "most", "precious", "treasure", "shining", "ever", "bright."
+
+      ];
+      const poetryContainer = document.getElementById('poetry');
+      poetryContainer.innerHTML = '';
+
+      poetry.forEach((word, index) => {
+        const span = document.createElement('span');
+        span.textContent = word;
+        span.classList.add('word');
+        span.style.animationDelay = `${index * 0.3}s`;
+        poetryContainer.appendChild(span);
+      });
+    }
+
+    function createHearts() {
+      const heartsContainer = document.getElementById('hearts');
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDuration = `${5 + Math.random() * 5}s`;
+        heartsContainer.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 10000);
+      }, 500);
+    }
+  </script>
+</body>
+</html> 
